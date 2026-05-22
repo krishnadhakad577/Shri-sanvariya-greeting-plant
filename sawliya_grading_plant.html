@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>श्री सांवलियाँ ग्रेडिंग प्लांट – मालखेड़ा</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark-green: #0B3D2E;
+  --deep-green: #072a1f;
+  --mid-green: #154a38;
+  --gold: #D4AF37;
+  --gold-light: #f0d060;
+  --gold-dark: #a07c1a;
+  --white: #ffffff;
+  --cream: #fef9e7;
+  --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(212,175,55,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--deep-green);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 20px; height: 20px;
+  background: radial-gradient(circle, var(--gold), transparent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s;
+  box-shadow: 0 0 15px var(--gold);
+}
+.cursor-trail {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+/* LOADER */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #0d4a35 0%, #041a10 100%);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#loader.hidden { opacity: 0; visibility: hidden; }
+
+.loader-logo {
+  width: 150px; height: 150px;
+  position: relative;
+  margin-bottom: 30px;
+}
+.loader-gear {
+  width: 100px; height: 100px;
+  border: 4px solid var(--gold);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: spin 3s linear infinite;
+  box-shadow: 0 0 30px var(--gold), inset 0 0 20px rgba(212,175,55,0.2);
+}
+.loader-gear::before {
+  content: '⚙';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 50px;
+  color: var(--gold);
+  text-shadow: 0 0 20px var(--gold);
+}
+.loader-wheat {
+  position: absolute;
+  font-size: 30px;
+  animation: orbit 3s linear infinite;
+}
+.loader-wheat:nth-child(2) { animation-delay: -1s; }
+.loader-wheat:nth-child(3) { animation-delay: -2s; }
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(65px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(65px) rotate(-360deg); }
+}
+@keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.loader-text {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  text-align: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+.loader-sub {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: var(--gold-light);
+  font-size: 1rem;
+  margin-top: 5px;
+  letter-spacing: 3px;
+}
+.loader-bar {
+  width: 200px; height: 3px;
+  background: rgba(212,175,55,0.2);
+  border-radius: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+.loader-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  border-radius: 10px;
+  animation: fill 2s ease forwards;
+}
+@keyframes fill { 0% { width: 0; } 100% { width: 100%; } }
+
+/* PARTICLES */
+.particles-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle linear infinite;
+}
+@keyframes float-particle {
+  0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-100px) rotate(720deg); }
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0; width: 100%;
+  z-index: 1000;
+  padding: 12px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7, 42, 31, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  transition: all 0.3s;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-logo-icon {
+  width: 55px; height: 55px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 0 20px rgba(212,175,55,0.5);
+  animation: spin 8s linear infinite;
+  border: 2px solid var(--gold-light);
+}
+.header-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+.header-logo-main {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+.header-logo-sub {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 0.7rem;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+}
+
+nav {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 25px;
+  transition: all 0.3s;
+  letter-spacing: 0.5px;
+  font-family: 'Poppins', sans-serif;
+}
+nav a:hover {
+  background: rgba(212,175,55,0.15);
+  color: var(--gold);
+  box-shadow: 0 0 15px rgba(212,175,55,0.2);
+}
+
+.whatsapp-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4) !important;
+  text-decoration: none;
+  font-size: 0.85rem;
+  animation: wa-pulse 2s ease-in-out infinite;
+}
+@keyframes wa-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+  50% { box-shadow: 0 4px 30px rgba(37,211,102,0.7); }
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #041a10 0%, #0B3D2E 50%, #041a10 100%);
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(11,61,46,0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(212,175,55,0.05) 0%, transparent 40%);
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4,26,16,0.3) 0%, rgba(7,42,31,0.6) 100%);
+}
+
+/* Animated wheat field effect */
+.wheat-field {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  opacity: 0.15;
+}
+.wheat-stalk {
+  width: 3px;
+  background: linear-gradient(to top, var(--gold-dark), var(--gold), transparent);
+  transform-origin: bottom center;
+  animation: sway 3s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  0% { transform: rotate(-5deg); }
+  100% { transform: rotate(5deg); }
+}
+
+/* Golden rays */
+.golden-rays {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(212,175,55,0.03) 10deg,
+    transparent 20deg,
+    rgba(212,175,55,0.03) 30deg,
+    transparent 40deg
+  );
+  animation: rays-rotate 20s linear infinite;
+}
+@keyframes rays-rotate { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 900px;
+  padding: 20px;
+}
+
+/* LOGO in hero */
+.hero-logo-emblem {
+  width: 140px; height: 140px;
+  margin: 0 auto 30px;
+  position: relative;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+.hero-logo-emblem img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(212,175,55,0.6), 0 0 100px rgba(212,175,55,0.2);
+  border: 3px solid rgba(212,175,55,0.5);
+}
+.hero-logo-ring {
+  position: absolute;
+  inset: -15px;
+  border: 2px solid rgba(212,175,55,0.3);
+  border-radius: 50%;
+  animation: spin 10s linear infinite;
+}
+.hero-logo-ring::before {
+  content: '🌾';
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+}
+.hero-logo-ring::after {
+  content: '⚙️';
+  position: absolute;
+  bottom: -10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(212,175,55,0.15);
+  border: 1px solid rgba(212,175,55,0.4);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  font-family: 'Poppins', sans-serif;
+}
+
+.hero-title {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 3s ease-in-out infinite, fadeInUp 1s ease forwards;
+  line-height: 1.2;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(212,175,55,0.4));
+  margin-bottom: 10px;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+.hero-divider {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 15px auto;
+}
+
+.hero-subtitle {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: rgba(255,255,255,0.9);
+  line-height: 1.8;
+  margin-bottom: 10px;
+  animation: fadeInUp 1s ease 0.3s both;
+}
+
+.hero-subtitle span {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 35px;
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+  transition: all 0.3s;
+  font-family: 'Noto Sans Devanagari', serif;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(37,211,102,0.6); }
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #E1306C, #833AB4, #F77737);
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 8px 30px rgba(225,48,108,0.4);
+  transition: all 0.3s;
+  font-family: 'Noto Sans Devanagari', serif;
+}
+.btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(225,48,108,0.6); }
+
+/* SECTION STYLES */
+section {
+  position: relative;
+  padding: 100px 40px;
+  z-index: 1;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.section-badge {
+  display: inline-block;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.3);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+.section-title {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+.section-line {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+/* POSTER SECTION */
+.poster-section {
+  background: linear-gradient(180deg, var(--deep-green) 0%, var(--dark-green) 100%);
+}
+
+.poster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.poster-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.1);
+  transition: all 0.4s;
+  position: relative;
+}
+.poster-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,175,55,0.1), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+.poster-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(212,175,55,0.2);
+  border-color: rgba(212,175,55,0.5);
+}
+.poster-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+.poster-label {
+  padding: 15px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+  background: rgba(7,42,31,0.8);
+}
+.poster-label p {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ABOUT SECTION */
+.about-section {
+  background: linear-gradient(180deg, var(--dark-green) 0%, var(--deep-green) 100%);
+}
+.about-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 25px;
+  padding: 50px;
+  backdrop-filter: blur(20px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.about-content::before {
+  content: '🌾';
+  position: absolute;
+  font-size: 150px;
+  opacity: 0.03;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.about-text {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.2rem;
+  line-height: 2;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 15px;
+}
+.about-text strong { color: var(--gold); }
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+}
+.about-tag {
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.3);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-family: 'Noto Sans Devanagari', serif;
+  color: var(--gold-light);
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+.about-tag:hover {
+  background: rgba(212,175,55,0.2);
+  transform: scale(1.05);
+}
+
+/* SERVICES */
+.services-section {
+  background: linear-gradient(180deg, var(--deep-green) 0%, var(--dark-green) 100%);
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.service-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 35px 25px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: -100%; left: -100%;
+  width: 300%; height: 300%;
+  background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 60%);
+  transition: all 0.5s;
+}
+.service-card:hover::before {
+  top: -50%; left: -50%;
+}
+.service-card:hover {
+  transform: translateY(-15px) scale(1.03);
+  border-color: var(--gold);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 40px rgba(212,175,55,0.2);
+}
+.service-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+  animation: float 3s ease-in-out infinite;
+}
+.service-card:nth-child(2) .service-icon { animation-delay: -0.5s; }
+.service-card:nth-child(3) .service-icon { animation-delay: -1s; }
+.service-card:nth-child(4) .service-icon { animation-delay: -1.5s; }
+.service-card:nth-child(5) .service-icon { animation-delay: -2s; }
+.service-card:nth-child(6) .service-icon { animation-delay: -2.5s; }
+.service-title {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.service-desc {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+}
+.service-badge {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: rgba(212,175,55,0.2);
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--gold);
+}
+
+/* VIDEO SECTION */
+.video-section {
+  background: linear-gradient(180deg, var(--dark-green) 0%, var(--deep-green) 100%);
+}
+
+.video-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.video-intro p {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+.reels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reel-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  position: relative;
+}
+.reel-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--gold);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.2);
+}
+
+.reel-header {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+}
+
+.reel-ig-icon {
+  width: 35px; height: 35px;
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.reel-info {
+  flex: 1;
+}
+.reel-info .reel-plant-name {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+.reel-info .reel-tag {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.reel-frame-container {
+  position: relative;
+  padding-bottom: 177.78%;
+  height: 0;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+.reel-frame-container iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+.reel-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0B3D2E, #072a1f);
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  gap: 15px;
+}
+.reel-fallback-icon {
+  width: 70px; height: 70px;
+  background: linear-gradient(135deg, #E1306C, #833AB4, #F77737);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(225,48,108,0.5);
+}
+.reel-fallback span {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+}
+.reel-fallback strong {
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+.reel-footer {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(212,175,55,0.2);
+}
+.reel-footer a {
+  color: var(--gold-light);
+  text-decoration: none;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s;
+}
+.reel-footer a:hover { color: var(--gold); }
+.reel-stats {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* GALLERY */
+.gallery-section {
+  background: linear-gradient(180deg, var(--deep-green) 0%, var(--dark-green) 100%);
+}
+
+.gallery-slider {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.1);
+}
+
+.gallery-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.gallery-item {
+  min-width: 100%;
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item-inner {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+  background: linear-gradient(135deg, rgba(11,61,46,0.9), rgba(7,42,31,0.95));
+  position: relative;
+}
+
+.gallery-item-content {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 30px;
+  background: linear-gradient(0deg, rgba(7,42,31,0.95) 0%, transparent 100%);
+  text-align: center;
+}
+.gallery-item-title {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+.gallery-item-desc {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px; height: 50px;
+  background: rgba(212,175,55,0.2);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 1.2rem;
+  z-index: 10;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+.gallery-nav:hover {
+  background: rgba(212,175,55,0.4);
+  transform: translateY(-50%) scale(1.1);
+}
+.gallery-prev { left: 20px; }
+.gallery-next { right: 20px; }
+
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+.gallery-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(212,175,55,0.3);
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.gallery-dot.active {
+  background: var(--gold);
+  transform: scale(1.3);
+}
+
+/* CONTACT */
+.contact-section {
+  background: linear-gradient(180deg, var(--dark-green) 0%, var(--deep-green) 100%);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 35px 25px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.contact-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.15);
+  border-color: rgba(212,175,55,0.5);
+}
+
+.contact-icon {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: all 0.3s;
+}
+.contact-card:hover .contact-icon { transform: scale(1.1) rotate(10deg); }
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: 'Poppins', sans-serif;
+}
+.contact-value {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+.contact-sub {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Poppins', sans-serif;
+}
+
+.contact-owner {
+  max-width: 500px;
+  margin: 0 auto 40px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+}
+.owner-avatar {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  margin: 0 auto 15px;
+  box-shadow: 0 0 30px rgba(212,175,55,0.4);
+}
+.owner-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+.owner-title {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 2px;
+  font-family: 'Poppins', sans-serif;
+}
+.owner-phone {
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212,175,55,0.15);
+  border: 1px solid var(--gold);
+  padding: 10px 25px;
+  border-radius: 30px;
+  color: var(--gold-light);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-family: 'Poppins', sans-serif;
+}
+.owner-phone:hover {
+  background: rgba(212,175,55,0.25);
+  transform: scale(1.05);
+}
+
+.address-card {
+  max-width: 600px;
+  margin: 30px auto 0;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+}
+.address-card p {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: rgba(255,255,255,0.85);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* SOCIAL ICONS ROW */
+.social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 40px;
+}
+.social-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid;
+}
+.social-icon-btn:hover { transform: translateY(-4px) scale(1.05); }
+
+.btn-wa { background: rgba(37,211,102,0.15); border-color: #25D366; color: #25D366; }
+.btn-wa:hover { background: rgba(37,211,102,0.3); box-shadow: 0 10px 30px rgba(37,211,102,0.3); }
+.btn-ig { background: rgba(225,48,108,0.15); border-color: #E1306C; color: #E1306C; }
+.btn-ig:hover { background: rgba(225,48,108,0.3); box-shadow: 0 10px 30px rgba(225,48,108,0.3); }
+.btn-call { background: rgba(212,175,55,0.15); border-color: var(--gold); color: var(--gold); }
+.btn-call:hover { background: rgba(212,175,55,0.3); box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+.btn-grp { background: rgba(37,211,102,0.1); border-color: #075E54; color: #25D366; }
+.btn-grp:hover { background: rgba(37,211,102,0.2); box-shadow: 0 10px 30px rgba(37,211,102,0.2); }
+
+/* FLOATING BUTTONS */
+.floating-btns {
+  position: fixed;
+  right: 25px;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 9999;
+}
+
+.float-btn {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  text-decoration: none;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  transition: all 0.3s;
+  position: relative;
+}
+.float-btn:hover { transform: scale(1.15) rotate(-5deg); }
+.float-btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); animation: wa-pulse 2s ease-in-out infinite; }
+.float-btn-call { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); animation: wa-pulse 2s ease-in-out 0.5s infinite; }
+.float-btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); animation: wa-pulse 2s ease-in-out 1s infinite; }
+
+.float-btn-label {
+  position: absolute;
+  right: 70px;
+  background: rgba(7,42,31,0.9);
+  border: 1px solid var(--glass-border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--gold-light);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  font-family: 'Poppins', sans-serif;
+}
+.float-btn:hover .float-btn-label { opacity: 1; }
+
+/* FOOTER */
+footer {
+  background: linear-gradient(180deg, var(--deep-green) 0%, #020f08 100%);
+  padding: 60px 40px 30px;
+  border-top: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.footer-logo-icon {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  box-shadow: 0 0 40px rgba(212,175,55,0.4), 0 0 80px rgba(212,175,55,0.1);
+  animation: spin 12s linear infinite;
+  border: 3px solid var(--gold-light);
+}
+.footer-logo-text {
+  text-align: center;
+}
+.footer-logo-main {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.footer-logo-sub {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: var(--gold-light);
+  font-size: 1rem;
+  letter-spacing: 3px;
+}
+
+.footer-divider {
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.footer-links a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+  font-family: 'Poppins', sans-serif;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(212,175,55,0.15);
+  width: 100%;
+}
+.footer-bottom p {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.8rem;
+  font-family: 'Poppins', sans-serif;
+}
+.footer-bottom span { color: var(--gold); }
+
+/* STATS */
+.stats-section {
+  background: linear-gradient(135deg, var(--dark-green), var(--deep-green));
+  padding: 60px 40px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.stat-card {
+  text-align: center;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 30px 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+.stat-card:hover { transform: translateY(-8px); border-color: rgba(212,175,55,0.5); }
+.stat-number {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'Noto Sans Devanagari', serif;
+  color: rgba(255,255,255,0.8);
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* MENU TOGGLE */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px;
+}
+.menu-toggle span {
+  width: 25px; height: 2px;
+  background: var(--gold);
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  header { padding: 12px 20px; }
+  section { padding: 70px 20px; }
+  .menu-toggle { display: flex; }
+  nav {
+    position: fixed;
+    top: 80px; right: -100%;
+    background: rgba(7,42,31,0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 30px;
+    gap: 10px;
+    border-left: 1px solid var(--glass-border);
+    width: 260px;
+    height: 100vh;
+    transition: right 0.3s;
+    z-index: 999;
+  }
+  nav.open { right: 0; }
+  nav a { width: 100%; text-align: center; }
+  .poster-grid { grid-template-columns: 1fr; }
+  .reels-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .services-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .hero-title { font-size: 2rem; }
+  .float-btn-label { display: none; }
+}
+
+/* SCROLL ANIMATIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.7s ease;
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.7s ease;
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* GOLDEN GLOW LINE */
+.glow-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+  margin: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- PARTICLES -->
+<div class="particles-container" id="particles"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">
+    <div class="loader-gear"></div>
+    <span class="loader-wheat" style="top:50%;left:50%;transform-origin:0 0;">🌾</span>
+    <span class="loader-wheat" style="top:50%;left:50%;transform-origin:0 0;">🌿</span>
+    <span class="loader-wheat" style="top:50%;left:50%;transform-origin:0 0;">⚙️</span>
+  </div>
+  <div class="loader-text">श्री सांवलियाँ ग्रेडिंग प्लांट</div>
+  <div class="loader-sub">मालखेड़ा</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <div class="header-logo">
+    <div class="header-logo-icon">⚙️</div>
+    <div class="header-logo-text">
+      <div class="header-logo-main">श्री सांवलियाँ ग्रेडिंग प्लांट</div>
+      <div class="header-logo-sub">मालखेड़ा • MALKHEDA</div>
+    </div>
+  </div>
+  <div class="menu-toggle" id="menuToggle">
+    <span></span><span></span><span></span>
+  </div>
+  <nav id="mainNav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#videos">Videos</a>
+    <a href="#contact">Contact</a>
+    <a href="https://wa.me/919406820426" class="whatsapp-btn" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="golden-rays"></div>
+  <div class="hero-overlay"></div>
+  
+  <!-- Animated wheat stalks -->
+  <div class="wheat-field" id="wheatField"></div>
+  
+  <div class="hero-content">
+    <div class="hero-logo-emblem">
+      <img src="/mnt/user-data/uploads/1000010484.png" alt="Logo" id="heroLogo">
+      <div class="hero-logo-ring"></div>
+    </div>
+    
+    <div class="hero-badge">✨ PREMIUM GRADING PLANT ✨</div>
+    
+    <h1 class="hero-title">श्री सांवलियाँ ग्रेडिंग प्लांट</h1>
+    
+    <div class="hero-divider"></div>
+    
+    <p class="hero-subtitle">
+      <span>सभी प्रकार के अनाज एवं फसल</span> जैसे गेहूं, सोयाबीन, मूंगफली,<br>
+      चना, अलसी, मेथी आदि की <span>सफाई की सुविधा उपलब्ध।</span>
+    </p>
+    <p class="hero-subtitle"><span>लहसुन एवं मूंगफली फोड़ने</span> की सुविधा उपलब्ध है।</p>
+    
+    <div class="hero-buttons">
+      <a href="https://wa.me/919406820426" class="btn-primary" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        व्हाट्सएप संपर्क
+      </a>
+      <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" class="btn-secondary" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card reveal">
+      <div class="stat-number">8+</div>
+      <div class="stat-label">प्रकार की सेवाएं</div>
+    </div>
+    <div class="stat-card reveal">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">ऑटोमेटिक प्लांट</div>
+    </div>
+    <div class="stat-card reveal">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">सुविधा उपलब्ध</div>
+    </div>
+    <div class="stat-card reveal">
+      <div class="stat-number">✓</div>
+      <div class="stat-label">प्रीमियम क्वालिटी</div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-line"></div>
+
+<!-- POSTERS / LOGO SECTION -->
+<section class="poster-section" id="about">
+  <div class="section-header reveal">
+    <div class="section-badge">OUR IDENTITY</div>
+    <h2 class="section-title">हमारे पोस्टर एवं लोगो</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="poster-grid">
+    <div class="poster-card reveal-left">
+      <img src="/mnt/user-data/uploads/1000010484.png" alt="श्री सांवलियाँ ग्रेडिंग प्लांट लोगो">
+      <div class="poster-label">
+        <p>🏆 ऑफिशियल लोगो – श्री सांवलियाँ ग्रेडिंग प्लांट</p>
+      </div>
+    </div>
+    <div class="poster-card reveal-right">
+      <img src="/mnt/user-data/uploads/1000011034.jpg" alt="श्री सांवलियाँ फ्लोर मील एवं ग्रेडिंग प्लांट पोस्टर">
+      <div class="poster-label">
+        <p>📋 ऑफिशियल पोस्टर – सेवाएं एवं जानकारी</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="section-header reveal">
+    <div class="section-badge">ABOUT US</div>
+    <h2 class="section-title">हमारी सेवाएँ</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-content reveal">
+    <p class="about-text">
+      <strong>श्री सांवलियाँ ग्रेडिंग प्लांट</strong> में सभी प्रकार के अनाज एवं फसल जैसे 
+      <strong>गेहूं, सोयाबीन, मूंगफली, चना, अलसी, मेथी</strong> आदि की सफाई की सुविधा उपलब्ध है।
+    </p>
+    <p class="about-text">
+      <strong>लहसुन एवं मूंगफली फोड़ने</strong> की सुविधा भी उपलब्ध है।
+    </p>
+    <p class="about-text">
+      बिना लेबर के पूरी तरह <strong>ऑटोमेटिक प्लांट</strong> – स्वच्छ अनाज, उत्तम सेवा, विश्वास हमारी पहचान।
+    </p>
+    <div class="about-tags">
+      <span class="about-tag">🌾 गेहूं</span>
+      <span class="about-tag">🌱 सोयाबीन</span>
+      <span class="about-tag">🥜 मूंगफली</span>
+      <span class="about-tag">🧄 लहसुन</span>
+      <span class="about-tag">🌿 अलसी</span>
+      <span class="about-tag">🌿 मेथी</span>
+      <span class="about-tag">🫘 चना</span>
+      <span class="about-tag">⚙️ ग्रेडिंग</span>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="section-header reveal">
+    <div class="section-badge">OUR SERVICES</div>
+    <h2 class="section-title">हमारी सेवाएं</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">🌾</span>
+      <div class="service-title">गेहूं सफाई</div>
+      <div class="service-desc">प्रीमियम ग्रेडिंग मशीन से गेहूं की उच्च गुणवत्ता सफाई</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🌱</span>
+      <div class="service-title">सोयाबीन सफाई</div>
+      <div class="service-desc">सोयाबीन की पूर्ण सफाई एवं ग्रेडिंग सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🥜</span>
+      <div class="service-title">मूंगफली सफाई</div>
+      <div class="service-desc">मूंगफली की सफाई एवं ग्रेडिंग की विशेष सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🧄</span>
+      <div class="service-title">लहसुन फोड़ना</div>
+      <div class="service-desc">ऑटोमेटिक मशीन से लहसुन फोड़ने की सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🥜</span>
+      <div class="service-title">मूंगफली फोड़ना</div>
+      <div class="service-desc">मूंगफली फोड़ने की आधुनिक मशीन सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🌿</span>
+      <div class="service-title">अलसी सफाई</div>
+      <div class="service-desc">अलसी की उच्च गुणवत्ता सफाई एवं ग्रेडिंग</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🌿</span>
+      <div class="service-title">मेथी सफाई</div>
+      <div class="service-desc">मेथी की प्रीमियम सफाई की सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">⚙️</span>
+      <div class="service-title">अनाज ग्रेडिंग</div>
+      <div class="service-desc">सभी प्रकार के अनाज की ऑटोमेटिक ग्रेडिंग सुविधा</div>
+      <div class="service-badge">✓</div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="section-header reveal">
+    <div class="section-badge">GALLERY</div>
+    <h2 class="section-title">फोटो गैलरी</h2>
+    <div class="section-line"></div>
+  </div>
+  
+  <div class="gallery-slider reveal">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #1a3a0f, #0B3D2E, #8B6914);">
+          <span style="font-size:150px;opacity:0.4;">🌾</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">गेहूं सफाई</div>
+            <div class="gallery-item-desc">प्रीमियम ग्रेडिंग मशीन से उच्च गुणवत्ता सफाई</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #1a3a0f, #2d5a1b, #0B3D2E);">
+          <span style="font-size:150px;opacity:0.4;">🌱</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">सोयाबीन</div>
+            <div class="gallery-item-desc">सोयाबीन ग्रेडिंग एवं सफाई प्लांट</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #3a1f0f, #0B3D2E, #3a2a0f);">
+          <span style="font-size:150px;opacity:0.4;">🥜</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">मूंगफली</div>
+            <div class="gallery-item-desc">मूंगफली सफाई एवं फोड़ने की मशीन</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #2a1a0a, #0B3D2E, #4a3a0a);">
+          <span style="font-size:150px;opacity:0.4;">🧄</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">लहसुन प्रोसेसिंग</div>
+            <div class="gallery-item-desc">लहसुन फोड़ने की ऑटोमेटिक मशीन</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #0B3D2E, #1a3a2a, #2a3a1a);">
+          <span style="font-size:150px;opacity:0.4;">🌿</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">अलसी सफाई</div>
+            <div class="gallery-item-desc">अलसी की उच्च गुणवत्ता ग्रेडिंग</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #1a2a0a, #0B3D2E, #2a3a0a);">
+          <span style="font-size:150px;opacity:0.4;">🌿</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">मेथी सफाई</div>
+            <div class="gallery-item-desc">मेथी की प्रीमियम सफाई सुविधा</div>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background: linear-gradient(135deg, #0a1a2a, #0B3D2E, #1a2a3a);">
+          <span style="font-size:150px;opacity:0.4;">⚙️</span>
+          <div class="gallery-item-content">
+            <div class="gallery-item-title">ग्रेडिंग मशीन</div>
+            <div class="gallery-item-desc">अत्याधुनिक ग्रेडिंग मशीनरी</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="gallery-nav gallery-prev" onclick="changeSlide(-1)">◀</button>
+    <button class="gallery-nav gallery-next" onclick="changeSlide(1)">▶</button>
+  </div>
+  <div class="gallery-dots" id="galleryDots"></div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- VIDEOS / INSTAGRAM REELS -->
+<section class="video-section" id="videos">
+  <div class="section-header reveal">
+    <div class="section-badge">VIDEO SHOWCASE</div>
+    <h2 class="section-title">वीडियो शोकेस</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="video-intro reveal">
+    <p>हमारे Instagram पर ग्रेडिंग प्लांट के Live Videos देखें</p>
+  </div>
+  
+  <div class="reels-grid">
+    <!-- Reel 1 -->
+    <div class="reel-card reveal">
+      <div class="reel-header">
+        <div class="reel-ig-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="reel-info">
+          <div class="reel-plant-name">सांवलियाँ ग्रेडिंग प्लांट</div>
+          <div class="reel-tag">@sawliya_grading_plant_malkheda</div>
+        </div>
+      </div>
+      <div class="reel-frame-container">
+        <a class="reel-fallback" href="https://www.instagram.com/reel/DYXUCQJIlNX/" target="_blank">
+          <div class="reel-fallback-icon">▶</div>
+          <strong>Reel देखें #1</strong>
+          <span>ग्रेडिंग प्लांट का Live Video<br>Instagram पर देखें</span>
+        </a>
+      </div>
+      <div class="reel-footer">
+        <a href="https://www.instagram.com/reel/DYXUCQJIlNX/?igsh=cHd3NHMxeGd1NG55" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram पर खोलें
+        </a>
+        <span class="reel-stats">🎬 Reel #1</span>
+      </div>
+    </div>
+
+    <!-- Reel 2 -->
+    <div class="reel-card reveal">
+      <div class="reel-header">
+        <div class="reel-ig-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="reel-info">
+          <div class="reel-plant-name">सांवलियाँ ग्रेडिंग प्लांट</div>
+          <div class="reel-tag">@sawliya_grading_plant_malkheda</div>
+        </div>
+      </div>
+      <div class="reel-frame-container">
+        <a class="reel-fallback" href="https://www.instagram.com/reel/DYcc9oMog24/" target="_blank">
+          <div class="reel-fallback-icon">▶</div>
+          <strong>Reel देखें #2</strong>
+          <span>अनाज सफाई प्रक्रिया<br>Instagram पर देखें</span>
+        </a>
+      </div>
+      <div class="reel-footer">
+        <a href="https://www.instagram.com/reel/DYcc9oMog24/?igsh=cnlsdTIyaHc0dzl0" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram पर खोलें
+        </a>
+        <span class="reel-stats">🎬 Reel #2</span>
+      </div>
+    </div>
+
+    <!-- Reel 3 -->
+    <div class="reel-card reveal">
+      <div class="reel-header">
+        <div class="reel-ig-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="reel-info">
+          <div class="reel-plant-name">सांवलियाँ ग्रेडिंग प्लांट</div>
+          <div class="reel-tag">@sawliya_grading_plant_malkheda</div>
+        </div>
+      </div>
+      <div class="reel-frame-container">
+        <a class="reel-fallback" href="https://www.instagram.com/reel/DYlk2aZIDJY/" target="_blank">
+          <div class="reel-fallback-icon">▶</div>
+          <strong>Reel देखें #3</strong>
+          <span>मशीन Working Video<br>Instagram पर देखें</span>
+        </a>
+      </div>
+      <div class="reel-footer">
+        <a href="https://www.instagram.com/reel/DYlk2aZIDJY/?igsh=ZDB0dnQ2MGwyY2x4" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram पर खोलें
+        </a>
+        <span class="reel-stats">🎬 Reel #3</span>
+      </div>
+    </div>
+
+    <!-- Reel 4 -->
+    <div class="reel-card reveal">
+      <div class="reel-header">
+        <div class="reel-ig-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="reel-info">
+          <div class="reel-plant-name">सांवलियाँ ग्रेडिंग प्लांट</div>
+          <div class="reel-tag">@sawliya_grading_plant_malkheda</div>
+        </div>
+      </div>
+      <div class="reel-frame-container">
+        <a class="reel-fallback" href="https://www.instagram.com/reel/DYQ6eeoI55j/" target="_blank">
+          <div class="reel-fallback-icon">▶</div>
+          <strong>Reel देखें #4</strong>
+          <span>प्लांट की विशेष झलक<br>Instagram पर देखें</span>
+        </a>
+      </div>
+      <div class="reel-footer">
+        <a href="https://www.instagram.com/reel/DYQ6eeoI55j/?igsh=MXZtbWc2djJ5bWQ5aw==" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram पर खोलें
+        </a>
+        <span class="reel-stats">🎬 Reel #4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instagram Follow Button -->
+  <div style="text-align:center;margin-top:40px;" class="reveal">
+    <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" target="_blank" class="btn-secondary" style="display:inline-flex;align-items:center;gap:10px;padding:15px 35px;border-radius:40px;font-family:'Noto Sans Devanagari',serif;font-size:1.1rem;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram Follow करें
+    </a>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-header reveal">
+    <div class="section-badge">CONTACT US</div>
+    <h2 class="section-title">संपर्क करें</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-owner reveal">
+    <div class="owner-avatar">👨‍🌾</div>
+    <div class="owner-name">Rahul Dhakad</div>
+    <div class="owner-title">OWNER • मालिक • श्री सांवलियाँ ग्रेडिंग प्लांट</div>
+    <a href="tel:+919406820426" class="owner-phone">
+      📞 9406820426
+    </a>
+  </div>
+
+  <div class="contact-grid">
+    <a href="https://wa.me/919406820426" class="contact-card" target="_blank">
+      <div class="contact-icon" style="background:linear-gradient(135deg,#25D366,#128C7E);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <div class="contact-label">WhatsApp</div>
+      <div class="contact-value">9406820426</div>
+      <div class="contact-sub">Direct WhatsApp Chat</div>
+    </a>
+
+    <a href="tel:+919406820426" class="contact-card">
+      <div class="contact-icon" style="background:linear-gradient(135deg,var(--gold-dark),var(--gold));">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </div>
+      <div class="contact-label">Call Now</div>
+      <div class="contact-value">9406820426</div>
+      <div class="contact-sub">सीधे कॉल करें</div>
+    </a>
+
+    <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" class="contact-card" target="_blank">
+      <div class="contact-icon" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+      <div class="contact-label">Instagram</div>
+      <div class="contact-value">@sawliya_grading</div>
+      <div class="contact-sub">sawliya_grading_plant_malkheda</div>
+    </a>
+
+    <a href="https://chat.whatsapp.com/I9SyJsH8QW4FCMmCBJiktf" class="contact-card" target="_blank">
+      <div class="contact-icon" style="background:linear-gradient(135deg,#075E54,#25D366);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <div class="contact-label">WhatsApp Group</div>
+      <div class="contact-value">Join Group</div>
+      <div class="contact-sub">ग्रुप से जुड़ें</div>
+    </a>
+  </div>
+
+  <!-- Social Row - All Icons -->
+  <div class="social-row reveal" style="margin-top:40px;">
+    <a href="https://wa.me/919406820426" class="social-icon-btn btn-wa" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp Chat
+    </a>
+    <a href="https://wa.me/919406820426" class="social-icon-btn btn-wa" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      व्हाट्सएप
+    </a>
+    <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" class="social-icon-btn btn-ig" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram Follow
+    </a>
+    <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" class="social-icon-btn btn-ig" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram Page
+    </a>
+    <a href="tel:+919406820426" class="social-icon-btn btn-call">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      Call Now
+    </a>
+    <a href="tel:+919406820426" class="social-icon-btn btn-call">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      कॉल करें
+    </a>
+    <a href="https://chat.whatsapp.com/I9SyJsH8QW4FCMmCBJiktf" class="social-icon-btn btn-grp" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      WhatsApp Group
+    </a>
+    <a href="https://chat.whatsapp.com/I9SyJsH8QW4FCMmCBJiktf" class="social-icon-btn btn-grp" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      ग्रुप Join करें
+    </a>
+  </div>
+
+  <div class="address-card reveal" style="margin-top:30px;">
+    <p>📍 <strong style="color:var(--gold);">पता:</strong> मालखेड़ा गिरदौड़ा रोड, मालखेड़ा<br>
+    तह. व जिला नीमच (म.प्र.)</p>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-logo reveal">
+      <div class="footer-logo-icon">⚙️</div>
+      <div class="footer-logo-text">
+        <div class="footer-logo-main">श्री सांवलियाँ ग्रेडिंग प्लांट</div>
+        <div class="footer-logo-sub">मालखेड़ा • MALKHEDA</div>
+      </div>
+    </div>
+    
+    <div class="footer-divider"></div>
+    
+    <!-- Footer Logo Image -->
+    <div style="text-align:center;" class="reveal">
+      <img src="/mnt/user-data/uploads/1000010484.png" alt="Logo" style="width:120px;height:120px;object-fit:contain;border-radius:50%;border:2px solid rgba(212,175,55,0.4);box-shadow:0 0 30px rgba(212,175,55,0.3);">
+    </div>
+
+    <!-- Footer Poster -->
+    <div style="max-width:500px;width:100%;" class="reveal">
+      <img src="/mnt/user-data/uploads/1000011034.jpg" alt="Poster" style="width:100%;border-radius:15px;border:1px solid rgba(212,175,55,0.3);box-shadow:0 10px 40px rgba(0,0,0,0.4);">
+    </div>
+    
+    <div class="footer-divider"></div>
+    
+    <div class="footer-links reveal">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#videos">Videos</a>
+      <a href="#contact">Contact</a>
+    </div>
+    
+    <div style="display:flex;gap:15px;flex-wrap:wrap;justify-content:center;" class="reveal">
+      <a href="https://wa.me/919406820426" target="_blank" style="width:45px;height:45px;background:linear-gradient(135deg,#25D366,#128C7E);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" target="_blank" style="width:45px;height:45px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="tel:+919406820426" style="width:45px;height:45px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </a>
+      <a href="https://chat.whatsapp.com/I9SyJsH8QW4FCMmCBJiktf" target="_blank" style="width:45px;height:45px;background:linear-gradient(135deg,#075E54,#25D366);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      </a>
+    </div>
+    
+    <div class="footer-divider"></div>
+    
+    <div class="footer-bottom">
+      <p>स्वच्छ अनाज | उत्तम सेवा | <span>विश्वास हमारी पहचान</span></p>
+      <p style="margin-top:8px;">© 2024 <span>श्री सांवलियाँ ग्रेडिंग प्लांट</span> – मालखेड़ा, नीमच (म.प्र.)</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="floating-btns">
+  <a href="https://wa.me/919406820426" class="float-btn float-btn-wa" target="_blank">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="float-btn-label">WhatsApp Chat</span>
+  </a>
+  <a href="tel:+919406820426" class="float-btn float-btn-call">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    <span class="float-btn-label">Call: 9406820426</span>
+  </a>
+  <a href="https://www.instagram.com/sawliya_grading_plant_malkheda" class="float-btn float-btn-ig" target="_blank">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    <span class="float-btn-label">Instagram</span>
+  </a>
+</div>
+
+<script>
+// LOADER
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2500);
+});
+
+// CURSOR
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursorTrail');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  setTimeout(() => {
+    trail.style.left = mx + 'px';
+    trail.style.top = my + 'px';
+  }, 100);
+});
+
+// PARTICLES
+const container = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+  p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  p.style.opacity = Math.random() * 0.5;
+  container.appendChild(p);
+}
+
+// WHEAT STALKS
+const field = document.getElementById('wheatField');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  s.className = 'wheat-stalk';
+  s.style.height = (Math.random() * 150 + 100) + 'px';
+  s.style.animationDelay = (Math.random() * 2) + 's';
+  s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+  field.appendChild(s);
+}
+
+// MENU
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('mainNav').classList.toggle('open');
+});
+
+// HEADER SCROLL
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('mainHeader');
+  if (window.scrollY > 50) {
+    h.style.background = 'rgba(4,26,16,0.97)';
+  } else {
+    h.style.background = 'rgba(7,42,31,0.85)';
+  }
+});
+
+// GALLERY SLIDER
+let currentSlide = 0;
+const track = document.getElementById('galleryTrack');
+const items = track.querySelectorAll('.gallery-item');
+const dotsContainer = document.getElementById('galleryDots');
+
+items.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+});
+
+function goToSlide(n) {
+  currentSlide = (n + items.length) % items.length;
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  document.querySelectorAll('.gallery-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+setInterval(() => changeSlide(1), 4000);
+
+// SCROLL REVEAL
+const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+
+// Hero logo image error fallback
+document.getElementById('heroLogo').onerror = function() {
+  this.style.display = 'none';
+  this.parentElement.innerHTML = '<div style="width:140px;height:140px;background:linear-gradient(135deg,#a07c1a,#D4AF37,#f0d060);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 0 50px rgba(212,175,55,0.6);border:3px solid rgba(212,175,55,0.5);">⚙️</div>';
+};
+</script>
+</body>
+</html>
